@@ -105,6 +105,41 @@ The Swagger UI provides an interactive way to explore and test API endpoints.
 - **Rate Limiting** using `express-rate-limit`.
 - **Password Hashing** with Bcrypt.
 
+```mermaid
+erDiagram
+  USER {
+    string name
+    string email
+    boolean active
+    string role "USER | ADMIN"
+    string password
+    string refreshToken
+  }
+  
+  GROUP {
+    string name
+    string type "public | private"
+    ObjectId admin
+    ObjectId[] members
+    ObjectId[] inviteToken.userId
+    string[] inviteToken.token
+    date[] inviteToken.expiresAt
+  }
+  
+  MESSAGE {
+    ObjectId groupId
+    ObjectId senderId
+    string content
+  }
+
+  USER ||--o{ GROUP : "belongs to"
+  GROUP ||--o{ USER : "has members"
+  GROUP ||--o{ MESSAGE : "contains messages"
+  MESSAGE ||--|{ USER : "sent by"
+
+
+
+
 ## License
 This project is licensed under the **MIT License**.
 
