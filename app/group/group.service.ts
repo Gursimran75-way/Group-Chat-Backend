@@ -3,7 +3,8 @@ import crypto from "crypto";
 import { type IUser } from "../user/user.dto";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
-import { getUserByEmail, updateUserGroup } from "../user/user.service";
+import { getUserByEmail, removeGroupIdFromEachMember, updateUserGroup } from "../user/user.service";
+import { deleteMessageAssociateWithGroup } from "../message/message.service";
 
 interface IUserWithoutPassword extends Omit<IUser, "password"> {}
 
@@ -178,5 +179,41 @@ export const isGroupExist = async (
     return false;
   }
   return true;
+};
+
+export const editGroup = async (
+  groupId: string,
+  data: { name: string }
+) => {
+  const group = await Group.findByIdAndUpdate({_id:groupId}, {name: data.name}, {new: true});
+
+  return { group };
+};
+
+export const deleteGroup = async (
+  groupId: string,
+  user: IUserWithoutPassword,
+) => {
+  
+  const group = await Group.findById(groupId);
+  if (!group) {
+    throw createHttpError(400, "Group not found");
+  }
+
+  if (group.admin.toString() !== user._id.toString()) {
+    throw createHttpError(403, "Only the admin can delete the group");
+  }
+
+    // Remove the group ID from each member's group field
+    await removeGroupIdFromEachMember(group);
+    
+
+    // Delete all messages associated with the group
+    await deleteMessageAssociateWithGroup(groupId);
+    
+    // Delete the group from the database
+    await Group.findByIdAndDelete(groupId);
+
+    return {}
 };
 

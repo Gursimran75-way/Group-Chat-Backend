@@ -55,5 +55,17 @@ router
     authenticateJWT,
     groupController.groupAnalytics
   )
+  .put(
+    "/edit-group/:groupId",
+    groupValidator.editGroup,
+    catchError,
+    authenticateJWT,
+    groupController.editGroup
+  )
+  .delete(
+    "/delete/:groupId",
+    authenticateJWT,
+    groupController.deleteGroup
+  )
 
 export default router;

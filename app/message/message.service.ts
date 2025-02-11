@@ -3,6 +3,7 @@ import { type IUser } from "../user/user.dto";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { checkUserExistInGroup, isGroupExist } from "../group/group.service";
+import { IGroup } from "../group/group.dto";
 
 interface IUserWithoutPassword extends Omit<IUser, "password"> {}
 
@@ -43,4 +44,10 @@ export const getAllMessages = async (
     throw createHttpError(400, "Group not found");
 
   return await Message.find({ groupId: data.groupId }).sort({ createdAt: 1 });
+};
+
+export const deleteMessageAssociateWithGroup = async (
+  groupId: string
+) => {
+  await Message.deleteMany({ groupId });
 };

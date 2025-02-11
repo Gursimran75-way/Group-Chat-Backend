@@ -3,6 +3,7 @@ import UserSchema from "./user.schema";
 import { createUserAccessTokens } from "../common/services/passport-jwt.service";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { IGroup } from "../group/group.dto";
 
 /**
  * Logs in a user by verifying credentials and generating access tokens.
@@ -170,5 +171,13 @@ export const updateUserGroup = async (userId: string, groupId: string) => {
     userId,
     { $addToSet: { groups: groupId } }, //ensure no duplicacy
     { new: true }
+  );
+};
+ 
+
+export const removeGroupIdFromEachMember = async (group: IGroup) => {
+  await UserSchema.updateMany(
+    { _id: { $in: group.members } }, // Find all users in the group
+    { $pull: { groups: group._id } }, // Remove the group from their list
   );
 };

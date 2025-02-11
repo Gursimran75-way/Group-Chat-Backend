@@ -72,3 +72,23 @@ export const groupAnalytics = asyncHandler(
     res.send(createResponse(result, "group analytics fetched successfully"));
   }
 );
+
+export const editGroup = asyncHandler(
+  async (req: Request, res: Response) => {
+    const result = await groupService.editGroup(
+      req.params.groupId,
+      req.body
+    );
+    res.send(createResponse(result, "group analytics fetched successfully"));
+  }
+);
+
+export const deleteGroup = asyncHandler(
+  async (req: Request, res: Response) => {
+    const result = await groupService.deleteGroup(
+      req.params.groupId,
+      req.user as IUserWithoutPassword,
+    );
+    res.send(createResponse(result, "group successfully deleted"));
+  }
+);

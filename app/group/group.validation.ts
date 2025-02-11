@@ -59,3 +59,16 @@ export const groupAnalytics = [
     .isString()
     .withMessage("groupId must be a string"),
 ];
+
+export const editGroup = [
+  param("groupId")
+    .notEmpty()
+    .withMessage("groupId is required")
+    .isString()
+    .withMessage("groupId must be a string"),
+    body("name")
+    .notEmpty()
+    .withMessage("name is required")
+    .isString()
+    .withMessage("name must be a string"),
+];
