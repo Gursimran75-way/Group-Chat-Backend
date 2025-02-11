@@ -8,12 +8,27 @@ import { deleteMessageAssociateWithGroup } from "../message/message.service";
 
 interface IUserWithoutPassword extends Omit<IUser, "password"> {}
 
-// Get all public groups
+
+/**
+ * Get all public groups
+ *
+ * @returns {Promise<import("./group.dto").IGroup[]>}
+ */
 export const getPublicGroups = async () => {
   return await Group.find({ type: "public" });
 };
 
-// Create a group
+/**
+ * Creates a new group and assigns the user as the admin and a member.
+ *
+ * @param {IUserWithoutPassword} user - The user creating the group, who will be set as the admin and a member.
+ * @param {Object} data - The details of the group being created.
+ * @param {string} data.name - The name of the group.
+ * @param {string} data.type - The type of the group (e.g., "public" or "private").
+ * @returns {Promise<IGroup>} - The newly created group document.
+ * @throws {createHttpError} - Throws an error if the user is not authorized.
+ */
+
 export const createGroup = async (
   user: IUserWithoutPassword,
   data: { name: string; type: string }
@@ -34,7 +49,16 @@ export const createGroup = async (
   return savedGroup;
 };
 
-// Join a public group
+
+/**
+ * Allows a user to join a public group if they are not already a member.
+ *
+ * @param {IUserWithoutPassword} user - The user attempting to join the group.
+ * @param {string} groupId - The ID of the group to join.
+ * @returns {Promise<Object>} - A success message if the user joins the group.
+ * @throws {createHttpError} - Throws an error if the user is unauthorized, the group is not found, the group is private, or the user is already a member.
+ */
+
 export const joinPublicGroup = async (
   user: IUserWithoutPassword,
   groupId: string
@@ -59,7 +83,16 @@ export const joinPublicGroup = async (
   return { message: "Joined the group successfully" };
 };
 
-// Create an invitation link for a private group
+
+/**
+ * Creates an invitation for a user to join a group.
+ *
+ * @param {IUserWithoutPassword} user - The user creating the invitation, must be the admin of the group.
+ * @param {string} groupId - The ID of the group to which the invitation is being created.
+ * @param {string} userId - The ID of the user being invited to the group.
+ * @returns {Promise<Object>} - An object containing a frontend link and an invitation link.
+ */
+
 export const createInvitation = async (
   user: IUserWithoutPassword,
   groupId: string,
@@ -91,7 +124,15 @@ export const createInvitation = async (
   };
 };
 
-// Accept an invitation
+/**
+ * Accepts an invitation to join a group.
+ *
+ * @param {string} token - The invitation token.
+ * @param {Object} data - The user's email address.
+ * @param {string} data.email - The email address of the user accepting the invitation.
+ * @returns {Promise<Object>} - A success message if the user joins the group.
+ * @throws {createHttpError} - Throws an error if the user is unauthorized, the invitation is invalid or expired, or the user is not authorized to use the invitation.
+ */
 export const acceptInvitation = async (
   token: string,
   data: { email: string }
@@ -128,7 +169,13 @@ export const acceptInvitation = async (
   return { message: "Joined the group successfully" };
 };
 
-// fetch analytics
+/**
+ * Get analytics for a user, including the total number of groups created and the number of members in each group.
+ *
+ * @param {IUserWithoutPassword} user - The user for whom analytics are being fetched.
+ * @returns {Promise<Object>} - An object containing the total number of groups created and an array of group analytics.
+ * @throws {createHttpError} - Throws an error if the user is unauthorized.
+ */
 export const analytics = async (user: IUserWithoutPassword) => {
   const userId = user?._id;
   if (!userId) throw createHttpError(401, "Unauthorized");
@@ -145,6 +192,13 @@ export const analytics = async (user: IUserWithoutPassword) => {
   return { totalGroupsCreated, groupUserCounts };
 };
 
+/**
+ * Get analytics for a group, including the group's admin and members.
+ *
+ * @param {string} groupId - The ID of the group for which analytics are being fetched.
+ * @returns {Promise<Object>} - An object containing the group's admin and members.
+ * @throws {createHttpError} - Throws an error if the group is not found.
+ */
 export const groupAnalytics = async (groupId: string) => {
   console.log(groupId)
   const group = await Group.findById(groupId)
@@ -160,6 +214,13 @@ export const groupAnalytics = async (groupId: string) => {
 };
 
 
+/**
+ * Checks if a user is a member of a group.
+ *
+ * @param {string} groupId - The ID of the group.
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<boolean>} - A boolean indicating whether the user is a member of the group.
+ */
 export const checkUserExistInGroup = async (
   groupId: string,
   userId: string
@@ -170,6 +231,12 @@ export const checkUserExistInGroup = async (
   return group.members.some((member) => member.toString() === userId);
 };
 
+/**
+ * Checks if a group exists.
+ *
+ * @param {string} groupId - The ID of the group.
+ * @returns {Promise<boolean>} - A boolean indicating whether the group exists.
+ */
 export const isGroupExist = async (
   groupId: string,
 ) => {
@@ -181,6 +248,13 @@ export const isGroupExist = async (
   return true;
 };
 
+/**
+ * edit group name.
+ *
+ * @param {string} groupId - The ID of the group.
+ * @param {string} data.name - The name of the group.
+ * @returns {Promise<boolean>} - A boolean indicating whether the group exists.
+ */
 export const editGroup = async (
   groupId: string,
   data: { name: string }
@@ -190,6 +264,13 @@ export const editGroup = async (
   return { group };
 };
 
+/**
+ * delete group.
+ *
+ * @param {string} groupId - The ID of the group.
+ * @param {IUserWithoutPassword} user - The user for whom analytics are being fetched.
+ * @returns {Promise<boolean>} - A boolean indicating whether the group exists.
+ */
 export const deleteGroup = async (
   groupId: string,
   user: IUserWithoutPassword,

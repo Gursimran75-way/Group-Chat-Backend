@@ -7,7 +7,16 @@ import { IGroup } from "../group/group.dto";
 
 interface IUserWithoutPassword extends Omit<IUser, "password"> {}
 
-// Get all public groups
+/**
+ * Creates a new message in a group.
+ *
+ * @param {IUserWithoutPassword} user - The user sending the message.
+ * @param {Object} data - The details of the message being created.
+ * @param {string} data.content - The content of the message.
+ * @param {string} data.groupId - The ID of the group to which the message belongs.
+ * @returns {Promise<IMessage>} - The newly created message document.
+ * @throws {createHttpError} - Throws an error if the user is unauthorized or not in the group.
+ */
 export const createMessage = async (
   user: IUserWithoutPassword,
   data: {
@@ -31,6 +40,15 @@ export const createMessage = async (
   return await message.save();
 };
 
+/**
+ * Get all messages in a group.
+ *
+ * @param {IUserWithoutPassword} user - The user requesting the messages.
+ * @param {Object} data - The details of the group whose messages are being fetched.
+ * @param {string} data.groupId - The ID of the group.
+ * @returns {Promise<IMessage[]>} - All messages in the group.
+ * @throws {createHttpError} - Throws an error if the user is unauthorized or the group is not found.
+ */
 export const getAllMessages = async (
   user: IUserWithoutPassword,
   data: {
@@ -46,6 +64,11 @@ export const getAllMessages = async (
   return await Message.find({ groupId: data.groupId }).sort({ createdAt: 1 });
 };
 
+/**
+ * Deletes a message by GroupId.
+ *
+ * @param {string} groupId - Group ID.
+ */
 export const deleteMessageAssociateWithGroup = async (
   groupId: string
 ) => {

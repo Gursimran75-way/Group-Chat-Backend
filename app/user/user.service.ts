@@ -175,9 +175,15 @@ export const updateUserGroup = async (userId: string, groupId: string) => {
 };
  
 
+
+/**
+ * Removes the specified group ID from each member's list of groups.
+ * @param {IGroup} group - The group object containing member IDs.
+ * @returns {Promise<void>} - Resolves when the operation is complete.
+ */
 export const removeGroupIdFromEachMember = async (group: IGroup) => {
   await UserSchema.updateMany(
-    { _id: { $in: group.members } }, // Find all users in the group
-    { $pull: { groups: group._id } }, // Remove the group from their list
+    { _id: { $in: group.members } }, // Find all users who are members of the group
+    { $pull: { groups: group._id } } // Remove the group ID from their list of groups
   );
 };
