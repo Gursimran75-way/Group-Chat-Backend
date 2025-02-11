@@ -11,7 +11,8 @@ import errorHandler from "./app/common/middleware/error-handler.middleware";
 import routes from "./app/routes";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "./app/swagger/swagger-output.json"
+// import swaggerDocument from "./app/swagger/swagger-output.json"
+import swaggerSpec from "./app/swagger/swagger-config";
 import rateLimit from "express-rate-limit";
 
 loadConfig();
@@ -43,7 +44,8 @@ const limiter = rateLimit({
   message: "Too many requests from this IP, please try again later.",
 });
 app.use(limiter);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json());

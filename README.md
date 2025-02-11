@@ -8,6 +8,7 @@ This is a backend service for a **Group Chat Application** built using **Express
 - **Message Handling** (Send, Retrieve Messages)
 - **Admin Analytics** (User & Group Stats)
 - **Rate Limiting** (Protection against API abuse)
+- **API Documentation with Swagger**
 
 ## Tech Stack
 - **Node.js** & **Express.js**
@@ -16,6 +17,7 @@ This is a backend service for a **Group Chat Application** built using **Express
 - **JWT Authentication**
 - **Bcrypt for Password Hashing**
 - **Express Rate Limit** (Security)
+- **Swagger for API Documentation**
 
 ## Installation
 
@@ -55,6 +57,15 @@ pnpm run dev
 pnpm run build && pnpm start
 ```
 
+## API Documentation
+This project includes **Swagger** for API documentation. Once the server is running, you can access the documentation at:
+
+```
+http://localhost:5000/api-docs
+```
+
+The Swagger UI provides an interactive way to explore and test API endpoints.
+
 ## API Endpoints
 
 ### **Auth Routes**
@@ -86,8 +97,8 @@ pnpm run build && pnpm start
 ### **Message Routes**
 | Method | Endpoint                | Description                |
 |--------|------------------------|----------------------------|
-| POST   | `/messages/:groupId`   | Send a message to a group  |
-| GET    | `/messages/:groupId`   | Get messages for a group   |
+| POST   | `/message/send`        | Send a message            |
+| POST   | `/message/get-all`     | Get all messages          |
 
 ## Security Measures
 - **JWT Authentication** to protect user data.
