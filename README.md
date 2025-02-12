@@ -3,10 +3,25 @@
 This is a backend service for a **Group Chat Application** built using **Express.js** and **TypeScript**. The backend provides user authentication, group chat management, and message handling via HTTP APIs.
 
 ## Features
-- **User Authentication** (Signup, Login, Logout, Token Refresh)
-- **Group Management** (Create, Update, Delete, Join Public/Private Groups)
-- **Message Handling** (Send, Retrieve Messages)
-- **Admin Analytics** (User & Group Stats)
+- **User Authentication**
+  - Signup & Login
+  - Admin can delete users
+  - Users can update passwords and other details
+  - Access & Refresh token support
+  - Logout functionality
+  - Retrieve all registered users
+- **Group Management**
+  - Users can create public or private groups
+  - The creator of a group becomes its admin
+  - Users can edit group names
+  - Any user can join a public group
+  - Admin must generate an invitation link for users to join private groups
+  - Users can retrieve all public groups
+  - Retrieve analytics for a single group
+  - Admin analytics: track groups created
+- **Message Handling**
+  - Send messages in a group
+  - Retrieve all messages for a group
 - **Rate Limiting** (Protection against API abuse)
 - **API Documentation with Swagger**
 
@@ -142,10 +157,7 @@ erDiagram
   MESSAGE ||--|{ USER : "sent by"
   GROUP ||--o{ INVITE_TOKEN : "has invite tokens"
   INVITE_TOKEN ||--|{ USER : "assigned to"
-
-
-
-
+```
 
 ## License
 This project is licensed under the **MIT License**.
