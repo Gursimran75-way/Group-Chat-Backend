@@ -130,17 +130,26 @@ router.post(
  *         name: token
  *         required: true
  *         schema:
+ *           type: string
+ *         description: Invitation token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
  *             properties:
  *               email:
  *                 type: string
- *                 example: "email@email.com"
+ *                 example: "example@gmail.com"
  *               password:
  *                 type: string
- *                 example: "pasword"
+ *                 example: "123"
  *     responses:
  *       200:
  *         description: Invitation accepted successfully
  */
+
 router.post(
   "/accept-invitation/:token",
   groupValidator.acceptInvitation,
@@ -212,9 +221,6 @@ router.get(
  *               name:
  *                 type: string
  *                 example: "Updated Group Name"
- *               description:
- *                 type: string
- *                 example: "Updated group description."
  *     responses:
  *       200:
  *         description: Group updated successfully

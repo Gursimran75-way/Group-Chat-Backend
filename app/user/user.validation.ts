@@ -31,7 +31,7 @@ export const updateUser = [
     .withMessage("email is required")
     .isString()
     .withMessage("email must be a string"),
-  body("active").isBoolean().withMessage("active must be a boolean"),
+  body("active").notEmpty().isBoolean().withMessage("active must be a boolean"),
   body("password")
     .notEmpty()
     .withMessage("password is required")

@@ -204,6 +204,12 @@ router.delete(
  *               email:
  *                 type: string
  *                 example: jane@example.com
+ *               password:
+ *                 type: string
+ *                 example: 123
+ *               active:
+ *                 type: boolean
+ *                 example: true | false
  *     responses:
  *       200:
  *         description: User updated successfully

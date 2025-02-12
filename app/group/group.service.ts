@@ -119,8 +119,8 @@ export const createInvitation = async (
   await group.save();
 
   return {
-    frontendLink: "dummy.com",
-    invitationLink: `/api/groups/accept-invitation/${token}`,
+    frontendLink: "http//:dummy-frontend.com",
+    invitationLink: `http//localhost:5000/api/groups/accept-invitation/${token}`,
   };
 };
 

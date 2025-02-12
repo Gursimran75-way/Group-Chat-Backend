@@ -29,7 +29,7 @@ const router = Router();
  *           schema:
  *             type: object
  *             properties:
- *               grupId:
+ *               groupId:
  *                 type: string
  *                 example: "groupId"
  *               content:
