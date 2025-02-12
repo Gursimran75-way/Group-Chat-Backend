@@ -121,9 +121,13 @@ erDiagram
     string type "public | private"
     ObjectId admin
     ObjectId[] members
-    ObjectId[] inviteToken.userId
-    string[] inviteToken.token
-    date[] inviteToken.expiresAt
+  }
+
+  INVITE_TOKEN {
+    ObjectId groupId
+    ObjectId userId
+    string token
+    date expiresAt
   }
   
   MESSAGE {
@@ -131,6 +135,14 @@ erDiagram
     ObjectId senderId
     string content
   }
+
+  USER ||--o{ GROUP : "belongs to"
+  GROUP ||--o{ USER : "has members"
+  GROUP ||--o{ MESSAGE : "contains messages"
+  MESSAGE ||--|{ USER : "sent by"
+  GROUP ||--o{ INVITE_TOKEN : "has invite tokens"
+  INVITE_TOKEN ||--|{ USER : "assigned to"
+
 
 
 
