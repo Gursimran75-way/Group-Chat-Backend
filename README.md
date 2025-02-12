@@ -132,11 +132,6 @@ erDiagram
     string content
   }
 
-  USER ||--o{ GROUP : "belongs to"
-  GROUP ||--o{ USER : "has members"
-  GROUP ||--o{ MESSAGE : "contains messages"
-  MESSAGE ||--|{ USER : "sent by"
-
 
 
 
